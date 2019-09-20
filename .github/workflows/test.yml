@@ -31,5 +31,4 @@ jobs:
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
-        run: |
-          pipenv run pytest benchmarks --compare
+        run: pipenv run pytest benchmarks --compare
