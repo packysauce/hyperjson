@@ -3,8 +3,8 @@ name: Test
 on: [push]
 
 jobs:
-  test:
-    name: Test on python ${{ matrix.py }}
+  test_cpython:
+    name: CPython ${{ matrix.py }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -12,10 +12,10 @@ jobs:
     container:
       image: quay.io/python-devs/ci-image:master
       env: 
-        PATH: "/home/runner/.cargo/bin:/home/runner/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        PATH: "/github/home/.cargo/bin:/github/home/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
         LC_ALL: C.UTF-8
         LANG: C.UTF-8
-      options: --user runner
+      options: --user github
     steps:
       - name: Checkout
         uses: actions/checkout@v1
