@@ -4,19 +4,17 @@ on: [push]
 
 jobs:
   test:
-    name: Run Tests
     container:
       image: quay.io/python-devs/ci-image:master
       env: 
         PATH: "$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
         LC_ALL: C.UTF-8
         LANG: C.UTF-8
-    build:
-      runs-on: ${{ matrix.os }}
-      strategy:
-        matrix:
-          os: [ubuntu-latest]
-          py: ['3.5', '3.6', '3.7', 3.8', '3.9'] 
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        py: ['3.5', '3.6', '3.7', 3.8', '3.9'] 
     steps:
     - uses: actions/checkout@v1
     - name: Install Rust
