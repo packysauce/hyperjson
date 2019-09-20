@@ -22,17 +22,7 @@ jobs:
           # there is no curl, only wget
           wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
           sh rustup-init.sh --default-toolchain nightly -y -v
-          
-        with:
-          entrypoint: /bin/sh {0}
       - name: Setup Pipenv
-        run: |
-          pip${{ matrix.py }} install --user pipenv
-        with:
-          entrypoint: /bin/sh {0}
-
+        run: pip${{ matrix.py }} install --user pipenv
       - name: Run Tests
-        run: |
-          make test
-        with:
-          entrypoint: /bin/sh {0}
+        run: make test
