@@ -17,7 +17,7 @@ jobs:
         run: |
           wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
           sh ./rustup-init.sh --default-toolchain nightly -y -v
-          echo '##[add-path]'$HOME/.cargo/bin
+          echo ::add-path::$HOME/.cargo/bin
       - name: Setup Python
         uses: actions/setup-python@v1
         with:
@@ -26,13 +26,15 @@ jobs:
       - name: Install Pipenv
         run: |
           pip3 install --user pipenv
-          echo '##[add-path]'$HOME/.local/bin
+          echo ::add-path::$HOME/.local/bin
       - name: Setup Virtualenv
         run: |
-          export VIRTUAL_ENV=$HOME/hyperjson-venv
+          mkdir -p $VIRTUAL_ENV
           pipenv --python ${{ matrix.py }} install --dev
-          echo '##[add-path]'$VIRTUAL_ENV
-          echo '##[set-env name=VIRTUAL_ENV;]'$VIRTUAL_ENV
+          echo ::add-path::$VIRTUAL_ENV
+          echo ::set-env name=VIRTUAL_ENV::$VIRTUAL_ENV
+        env:
+          VIRTUAL_ENV=$HOME/hyperjson-venv
       - name: Setup Hyperjson
         run: pipenv run maturin develop --release -i python${{ matrix.py }}
       - name: Run Tests
