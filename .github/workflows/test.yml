@@ -26,5 +26,12 @@ jobs:
           sh ./rustup-init.sh --default-toolchain nightly -y -v
       - name: Setup Pipenv
         run: sudo pip install pipenv
+      - name: Setup Hyperjson
+        run: |
+          pipenv install --dev
+          pipenv run maturin develop --release -i python${{ matrix.py }}
       - name: Run Tests
-        run: make test
+        run: pipenv run pytest tests
+      - name: Benchmarks
+        run: |
+          pipenv run pytest benchmarks --compare
