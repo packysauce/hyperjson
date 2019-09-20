@@ -32,7 +32,9 @@ jobs:
           pipenv --python ${{ matrix.py }} install --dev
           echo ::add-path::$(dirname $(pipenv run which pip 2>/dev/null))
       - name: Setup Hyperjson
-        run: pipenv run maturin develop --release -i python${{ matrix.py }}
+        run: |
+          pipenv install maturin
+          pipenv run maturin develop --release -i python${{ matrix.py }}
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
