@@ -21,10 +21,11 @@ jobs:
 
       - name: Install Rust
         run: |
+          set -x
           wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
           chmod +x ./rustup-init.sh
           ./rustup-init.sh --default-toolchain nightly -y -v
-          rm ./rustup-init.sh
+        working-directory: /tmp
 
       - name: Setup Pipenv
         run: pip${{ matrix.py }} install --user pipenv
