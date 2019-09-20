@@ -27,13 +27,9 @@ jobs:
       - name: Install Dependencies
         run: |
           echo "$PATH"
-          pipenv install
           pipenv install --dev
       - name: Setup Hyperjson
-        run: |
-          # why this can't be 'pipenv run maturin' is beyond me
-          source ~/.local/share/virtualenvs/hyperjson-*/bin/activate
-          maturin develop --release -i python${{ matrix.py }}
+        run: pipenv run maturin develop --release -i python${{ matrix.py }}
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
