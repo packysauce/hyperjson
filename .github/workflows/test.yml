@@ -3,36 +3,30 @@ name: Test
 on: [push]
 
 jobs:
+  container: 
+    image: quay.io/python-devs/ci-image:master
+    env: 
+      PATH: "$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
         py: ['3.5', '3.6', '3.7', 3.8', '3.9'] 
-    
     steps:
     - uses: actions/checkout@v1
-    - uses: docker://quay.io/python-devs/ci-image:master
     - name: Install Rust
       run: |
         # there is no curl, only wget
         wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
         sh rustup-init.sh --default-toolchain nightly -y -v
-      env: 
-        PATH: "$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-        LC_ALL: C.UTF-8
-        LANG: C.UTF-8
+
     - name: Setup Pipenv
       run: |
         pip${{ matrix.py }} install --user pipenv
-      env:
-        PATH: "$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-        LC_ALL: C.UTF-8
-        LANG: C.UTF-8
+
     - name: Run Tests
       run: |
         make test
-      env:
-        PATH: "$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-        LC_ALL: C.UTF-8
-        LANG: C.UTF-8
