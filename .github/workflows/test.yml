@@ -3,9 +3,7 @@ name: Test
 on: [push]
 
 global_env: &global_env
-  PATH: "$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-  LC_ALL: C.UTF-8
-  LANG: C.UTF-8
+
 
 jobs:
   build:
@@ -23,8 +21,10 @@ jobs:
         # there is no curl, only wget
         wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
         sh rustup-init.sh --default-toolchain nightly -y -v
-      env:
-        <<: *global_env
+      env: &global_env
+        PATH: "$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+        LC_ALL: C.UTF-8
+        LANG: C.UTF-8
     - name: Setup Pipenv
       run: |
         pip${{ matrix.py }} install --user pipenv
@@ -33,3 +33,5 @@ jobs:
     - name: Run Tests
       run: |
         make test
+      env:
+        <<: *global_env
