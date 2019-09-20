@@ -29,12 +29,8 @@ jobs:
           echo ::add-path::$HOME/.local/bin
       - name: Setup Virtualenv
         run: |
-          mkdir -p $VIRTUAL_ENV
           pipenv --python ${{ matrix.py }} install --dev
-          echo ::add-path::$VIRTUAL_ENV
-          echo ::set-env name=VIRTUAL_ENV::$VIRTUAL_ENV
-        env:
-          VIRTUAL_ENV: $HOME/hyperjson-venv
+          echo ::add-path::$(dirname $(pipenv run which pip 2>/dev/null))
       - name: Setup Hyperjson
         run: pipenv run maturin develop --release -i python${{ matrix.py }}
       - name: Run Tests
