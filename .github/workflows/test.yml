@@ -13,18 +13,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Setup Python ${{ matrix.py }}
+      - name: Setup Python
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.py }}
           architecture: x64
+      - name: Setup Pipenv
+        run: pip install --user pipenv
       - name: Install Rust
         run: |
           wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
           sh ./rustup-init.sh --default-toolchain nightly -y -v
-     
       - name: Setup Pipenv
-        run: sudo pip${{ matrix.py }} install pipenv
-
+        run: sudo pip install pipenv
       - name: Run Tests
         run: make test
