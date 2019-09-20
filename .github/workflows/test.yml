@@ -4,32 +4,27 @@ on: [push]
 
 jobs:
   test_cpython:
-    name: CPython ${{ matrix.py }}
-    runs-on: ubuntu-latest
+    name: CPython ${{ matrix.py }} for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        py: [3.7] 
-    container:
-      image: quay.io/python-devs/ci-image:master
-      env: 
-        PATH: "/home/runner/.cargo/bin:/home/runner/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-        LC_ALL: C.UTF-8
-        LANG: C.UTF-8
-        HOME: /home/runner
-      options: --user runner
+        os: [ubuntu-latest]
+        py: [3.7]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-
+      - name: Setup Python ${{ matrix.py }}
+        uses: actions/setup-python@v1
+          with:
+            python-version: ${{ matrix.py }}
+            architecture: x64
       - name: Install Rust
         run: |
-          set -x
           wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
           sh ./rustup-init.sh --default-toolchain nightly -y -v
-        working-directory: /tmp
-
+     
       - name: Setup Pipenv
-        run: pip${{ matrix.py }} install --user pipenv
+        run: sudo pip${{ matrix.py }} install pipenv
 
       - name: Run Tests
         run: make test
