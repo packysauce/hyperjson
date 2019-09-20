@@ -8,13 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        py: [3.5, 3.6, 3.7, 3.8, 3.9] 
+        py: [3.7] 
     container:
       image: quay.io/python-devs/ci-image:master
       env: 
         PATH: "/home/runner/.cargo/bin:/home/runner/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
         LC_ALL: C.UTF-8
         LANG: C.UTF-8
+      options: --user runner
     steps:
       - name: Checkout
         uses: actions/checkout@v1
