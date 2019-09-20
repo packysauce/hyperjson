@@ -19,17 +19,15 @@ jobs:
           python-version: ${{ matrix.py }}
           architecture: x64
       - name: Setup Pipenv
-        run: pip install --user pipenv
+        run: sudo pip install pipenv
       - name: Install Rust
         run: |
           wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
           sh ./rustup-init.sh --default-toolchain nightly -y -v
-      - name: Setup Pipenv
-        run: sudo pip install pipenv
+      - name: Install Dependencies
+        run: pipenv install --dev
       - name: Setup Hyperjson
-        run: |
-          pipenv install --dev
-          pipenv run maturin develop --release -i python${{ matrix.py }}
+        run: pipenv run maturin develop --release -i python${{ matrix.py }}
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
