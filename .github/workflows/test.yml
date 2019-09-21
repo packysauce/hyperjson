@@ -40,7 +40,6 @@ jobs:
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
-        if: matrix.os == ubuntu-latest
         run: |
           mkdir bench_out
           pipenv run pytest benchmarks --compare --benchmark-json bench_out/report.json
