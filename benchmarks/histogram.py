@@ -24,7 +24,7 @@ def plot(operation, ops, outdir):
         fig, axes = plt.subplots(figsize=(10, 20))
         for i, (name, contenders) in enumerate(tasks.items()):
             axes = plt.subplot(len(tasks), 1, i+1)
-            axes.set_title(f"{operation} {name} [operations/second]")
+            axes.set_title("{} {} [operations/second]".format(operation, name))
             N = len(contenders)
             indices = np.arange(N)  # the x locations for the groups
             axes.set_xticks(indices)
@@ -35,7 +35,7 @@ def plot(operation, ops, outdir):
                 axes.bar(i, ops, BAR_WIDTH, color=color)
 
         plt.tight_layout()
-        plt.savefig(f'{outdir}/{operation}.png')
+        plt.savefig("{}/{}.png".format(outdir, operation))
 
 
 def get_ops(fname):
