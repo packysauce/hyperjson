@@ -40,12 +40,14 @@ jobs:
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
+        if: matrix.os == ubuntu-latest
         run: |
           mkdir bench_out
           pipenv run pytest benchmarks --compare --benchmark-json bench_out/report.json
           pipenv run python benchmarks/histogram.py bench_out/report.json bench_out
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@master
+        if: matrix.os == ubuntu-latest
         with:
           name: benchmarks
           path: bench_out
