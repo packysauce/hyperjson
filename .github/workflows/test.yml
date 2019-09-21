@@ -31,7 +31,7 @@ jobs:
         run: |
           # squelch the warning
           sed -i -e 's/python_version.*/python_version = "${{matrix.py}}"/g' Pipfile
-          pipenv --python ${{ matrix.py }} install --dev
+          pipenv --python ${{ matrix.py }} install --dev --skip-lock
           echo ::add-path::$(dirname $(pipenv run which pip 2>/dev/null))
       - name: Setup Hyperjson
         run: |
@@ -41,6 +41,7 @@ jobs:
         run: pipenv run pytest tests
       - name: Benchmarks
         run: |
+          mkdir bench_out
           pipenv run pytest benchmarks --compare --benchmark-json bench_out/report.json
           pipenv run python benchmarks/histogram.py bench_out/report.json bench_out
       - name: Upload Benchmark Results
