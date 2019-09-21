@@ -46,7 +46,7 @@ jobs:
           pipenv run python benchmarks/histogram.py bench_out/report.json bench_out
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@master
-        if: matrix.os == ubuntu-latest
+        if: matrix.os == 'ubuntu-latest'
         with:
           name: benchmarks
           path: bench_out
