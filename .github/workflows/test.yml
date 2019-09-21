@@ -40,4 +40,11 @@ jobs:
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
-        run: pipenv run pytest benchmarks --compare
+        run: |
+          pipenv run pytest benchmarks --compare --benchmark-json bench_out/report.json
+          pipenv run python benchmarks/histogram.py bench_out/report.json bench_out
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@master
+        with:
+          name: benchmarks
+          path: bench_out
