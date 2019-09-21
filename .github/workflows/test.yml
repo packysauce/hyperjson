@@ -43,6 +43,7 @@ jobs:
         run: |
           mkdir bench_out
           pipenv run pytest benchmarks --compare --benchmark-json bench_out/report.json
+          bzip2 bench_out/report.json
       - name: Generate Benchmark Reports
         if: matrix.os == 'ubuntu-latest'
         run: pipenv run python benchmarks/histogram.py bench_out/report.json bench_out
