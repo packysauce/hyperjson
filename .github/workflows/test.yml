@@ -43,7 +43,9 @@ jobs:
         run: |
           mkdir bench_out
           pipenv run pytest benchmarks --compare --benchmark-json bench_out/report.json
-          pipenv run python benchmarks/histogram.py bench_out/report.json bench_out
+      - name: Generate Benchmark Reports
+        if: matrix.os == 'ubuntu-latest'
+        run: pipenv run python benchmarks/histogram.py bench_out/report.json bench_out
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@master
         if: matrix.os == 'ubuntu-latest'
