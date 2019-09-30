@@ -10,6 +10,7 @@ pytest-benchmark = "*"
 simplejson = "*"
 ujson = "*"
 yajl = "*"
+orjson = "*"
 python-rapidjson = "*"
 wheel = "*"
 pylint = "*"
@@ -17,7 +18,7 @@ pylint = "*"
 matplotlib = "==3.0.3"
 hypothesis = "*"
 autopep8 = "*"
-maturin = "*"
+maturin = "==0.7.2"
 
 [packages]
 

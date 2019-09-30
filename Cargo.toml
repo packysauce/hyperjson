@@ -1,16 +1,39 @@
 [package]
 name = "hyperjson"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Matthias Endler <matthias-endler@gmx.net>"]
+description = "A hyper-fast Python module for reading/writing JSON data"
+edition = "2018"
+license = "Apache-2.0"
+repository = "https://github.com/mre/hyperjson"
+homepage = "https://github.com/mre/hyperjson"
+readme = "README.md"
+keywords = ["fast", "json", "python"]
+
+[package.metadata.maturin]
+classifier = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python",
+    "Programming Language :: Rust",
+]
 
 [dependencies]
 serde_json = "1.0.40"
 failure = "0.1.5"
 serde = "1.0.101"
 serde_derive = "1.0.101"
-
-[dependencies.pyo3]
-version = "0.8.0"
+pyo3 = "0.8.0"
 
 [lib]
 name = "hyperjson"
@@ -24,6 +47,9 @@ default = ["pyo3/extension-module"]
 members = [ "profiling" ]
 
 [profile.release]
-opt-level = 3
 codegen-units = 1
+debug = false
+incremental = false
 lto = true
+opt-level = 3
+
