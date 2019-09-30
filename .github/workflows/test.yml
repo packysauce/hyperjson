@@ -31,6 +31,8 @@ jobs:
         with:
           python-version: ${{ matrix.py }}
           architecture: x64
+      - name: Install Pipenv
+        run: |
           set -xueo pipefail
           pip3 install --user pipenv
           echo ::add-path::$HOME/.local/bin
