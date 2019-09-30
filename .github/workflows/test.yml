@@ -21,14 +21,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Install Rust
-        run: |
-          wget --https-only --secure-protocol=TLSv1_2 -O rustup-init.sh https://sh.rustup.rs
-          sh ./rustup-init.sh --default-toolchain nightly -y -v
-          echo ::add-path::$HOME/.cargo/bin
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
       - name: Install Rust Nightly
         uses: actions-rs/toolchain@master
         with:
