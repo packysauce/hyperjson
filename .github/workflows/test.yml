@@ -68,6 +68,8 @@ jobs:
         run: pipenv run pytest benchmarks --compare
       - name: Upload to PyPI
         shell: bash
+        # only use the 3.6 builds, the machines have all of them
+        if: matrix.py == '3.6'
         #if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         run: |
           pipenv run maturin publish ${EXTRA_RUST_ARGS:+--rustc-extra-args=$EXTRA_RUST_ARGS} \
