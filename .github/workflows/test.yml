@@ -2,6 +2,10 @@ name: Test
 
 on:
   push:
+    branches:
+      - 'master'
+    tags:
+      - 'v1.*'
     paths:
       - '.github/workflows/test.yml'
       - 'Pipfile*'
@@ -49,13 +53,21 @@ jobs:
             echo "::set-env name=EXTRA_RUST_ARGS::-L$real_path"
           fi
         shell: bash
-      - name: Setup Hyperjson
+      - name: Build Hyperjson
         run: |
           set -xueo pipefail
           pipenv install maturin==0.7.2
           pipenv run maturin develop --release ${EXTRA_RUST_ARGS:+--rustc-extra-args=$EXTRA_RUST_ARGS}
+          pipenv run maturin build --release -o dist
         shell: bash
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
         run: pipenv run pytest benchmarks --compare
+      - name: Upload to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        #if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_token }}
+          repository_url: https://test.pypi.org/legacy
