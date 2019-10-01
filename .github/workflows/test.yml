@@ -72,6 +72,11 @@ jobs:
         if: matrix.py == '3.6'
         #if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            for py in /opt/hostedtoolcache/Python/*/x64/bin; do
+              PATH="$PATH:$py"
+            done
+          fi
           pipenv run maturin publish ${EXTRA_RUST_ARGS:+--rustc-extra-args=$EXTRA_RUST_ARGS} \
             -r https://test.pypi.org/legacy/ \
             -u __token__
