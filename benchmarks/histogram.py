@@ -1,8 +1,15 @@
+## Eat json, create plot
+# program takes two positional arguments
+# first is the json output of a pytest benchmark run
+# second is the output directory (must exist)
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 import itertools
 from collections import defaultdict
 import json
+import sys
 
 
 def nested_dict(): return defaultdict(nested_dict)
@@ -11,13 +18,13 @@ def nested_dict(): return defaultdict(nested_dict)
 BAR_WIDTH = 0.25
 
 
-def plot(operation, ops):
+def plot(operation, ops, outdir):
     tasks = ops[operation]
     with plt.xkcd():
         fig, axes = plt.subplots(figsize=(10, 20))
         for i, (name, contenders) in enumerate(tasks.items()):
             axes = plt.subplot(len(tasks), 1, i+1)
-            axes.set_title(f"{operation} {name} [operations/second]")
+            axes.set_title("{} {} [operations/second]".format(operation, name))
             N = len(contenders)
             indices = np.arange(N)  # the x locations for the groups
             axes.set_xticks(indices)
@@ -28,12 +35,12 @@ def plot(operation, ops):
                 axes.bar(i, ops, BAR_WIDTH, color=color)
 
         plt.tight_layout()
-        plt.savefig(f'assets/{operation}.png')
+        plt.savefig("{}/{}.png".format(outdir, operation))
 
 
-def get_ops():
+def get_ops(fname):
     data = nested_dict()
-    with open("benchmark.json") as f:
+    with open(fname) as f:
         raw = json.load(f)
         for benchmark in raw["benchmarks"]:
             name, test = benchmark["param"].split('-', 1)
@@ -44,6 +51,6 @@ def get_ops():
 
 
 if __name__ == "__main__":
-    ops = get_ops()
-    plot("serialize", ops)
-    plot("deserialize", ops)
+    ops = get_ops(sys.argv[1])
+    plot("serialize", ops, sys.argv[2])
+    plot("deserialize", ops, sys.argv[2])
