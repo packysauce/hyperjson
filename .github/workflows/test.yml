@@ -61,16 +61,15 @@ jobs:
           set -xueo pipefail
           pipenv install maturin==0.7.2
           pipenv run maturin develop --release ${EXTRA_RUST_ARGS:+--rustc-extra-args=$EXTRA_RUST_ARGS}
-          pipenv run maturin build --release -o dist
         shell: bash
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
         run: pipenv run pytest benchmarks --compare
       - name: Upload to PyPI
-        uses: pypa/gh-action-pypi-publish@master
         #if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-        with:
-          user: __token__
-          password: ${{ secrets.pypi_token }}
-          repository_url: https://test.pypi.org/legacy
+        run: |
+          pipenv run maturin publish ${EXTRA_RUST_ARGS:+--rustc-extra-args=$EXTRA_RUST_ARGS} \
+            -r https://test.pypi.org/legacy
+        env:
+          MATURIN_PASSWORD: ${{ secrets.pypy_token }}
