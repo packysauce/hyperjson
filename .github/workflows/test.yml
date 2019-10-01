@@ -67,9 +67,11 @@ jobs:
       - name: Benchmarks
         run: pipenv run pytest benchmarks --compare
       - name: Upload to PyPI
+        shell: bash
         #if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         run: |
           pipenv run maturin publish ${EXTRA_RUST_ARGS:+--rustc-extra-args=$EXTRA_RUST_ARGS} \
-            -r https://test.pypi.org/legacy
+            -r https://test.pypi.org/legacy \
+            -u __token__
         env:
           MATURIN_PASSWORD: ${{ secrets.pypy_token }}
