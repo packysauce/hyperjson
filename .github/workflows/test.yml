@@ -32,7 +32,7 @@ jobs:
           python-version: ${{ matrix.py }}
           architecture: x64
       - name: Install Pipenv
-        run:
+        run: |
           set -xueo pipefail
           pip3 install --user pipenv
           echo ::add-path::$HOME/.local/bin
@@ -58,12 +58,12 @@ jobs:
       - name: Run Tests
         run: pipenv run pytest tests
       - name: Benchmarks
-        run: |
-          mkdir bench_out
-          pipenv run pytest benchmarks --compare --benchmark-json report.json
+        run: pipenv run pytest benchmarks --compare --benchmark-json report.json
       - name: Generate Benchmark Reports
         if: matrix.os == 'ubuntu-latest'
-        run: pipenv run python benchmarks/histogram.py report.json bench_out
+        run: |
+          mkdir bench_out
+          pipenv run python benchmarks/histogram.py report.json bench_out
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@master
         if: matrix.os == 'ubuntu-latest'
